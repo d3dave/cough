@@ -9,7 +9,7 @@ with open(os.path.join(root, 'README.md')) as readme_file:
 
 setup(
     name='cough',
-    version='0.1',
+    version='0.1.1',
     description='Write COFF object files',
     long_description=long_description,
     author='David D. Dorfman',
