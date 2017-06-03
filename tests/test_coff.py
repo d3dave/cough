@@ -2,20 +2,20 @@ import os
 import tempfile
 import subprocess
 
-import coff
+import cough
 
 TESTS_DIR = os.path.dirname(__file__)
 BUILD_SCRIPT = os.path.join(TESTS_DIR, 'build.ps1')
 
 
 def test_coff():
-    module = coff.ObjectModule()
+    module = cough.ObjectModule()
 
     # mov rax, 0; ret
-    sec_aaaa = coff.Section(b'aaaa', coff.SectionFlags.MEM_EXECUTE, b'\x48\xC7\xC0\x00\x00\x00\x00\xC3')
+    sec_aaaa = cough.Section(b'aaaa', cough.SectionFlags.MEM_EXECUTE, b'\x48\xC7\xC0\x00\x00\x00\x00\xC3')
     module.sections.append(sec_aaaa)
 
-    sym1 = coff.SymbolRecord(b'main', section_number=1, storage_class=symbol.StorageClass.EXTERNAL)
+    sym1 = cough.SymbolRecord(b'main', section_number=1, storage_class=symbol.StorageClass.EXTERNAL)
     sym1.value = 0  # offset 0
     module.symbols.append(sym1)
 

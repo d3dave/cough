@@ -1,3 +1,6 @@
+"""
+
+"""
 __author__ = 'David D. Dorfman'
 
 from .file import *
