@@ -15,12 +15,8 @@ def test_coff():
     sec_aaaa = coff.Section(b'aaaa', coff.SectionFlags.MEM_EXECUTE, b'\x48\xC7\xC0\x00\x00\x00\x00\xC3')
     module.sections.append(sec_aaaa)
 
-    sym1 = coff.SymbolRecord()
-    sym1.name = b'main'
-    sym1.section_number = 1  # aaaa
-    sym1.storage_class = coff.StorageClass.EXTERNAL
-    sym1.value = 0
-    sym1.type = 0
+    sym1 = coff.SymbolRecord(b'main', section_number=1, storage_class=symbol.StorageClass.EXTERNAL)
+    sym1.value = 0  # offset 0
     module.symbols.append(sym1)
 
     file_buffer = module.get_buffer()
