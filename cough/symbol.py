@@ -9,59 +9,59 @@ class SpecialSectionNumber(enum.IntEnum):
 
 
 class StorageClass(enum.IntEnum):
-    END_OF_FUNCTION = -1  # A special symbol that represents the end of function, for debugging purposes.
-    NULL = 0  # No assigned storage class.
-    AUTOMATIC = 1  # The automatic (stack) variable. The Value field specifies the stack frame offset.
-    EXTERNAL = 2  # A value that Microsoft tools use for external symbols. The Value field indicates the size if the section number is IMAGE_SYM_UNDEFINED (0). If the section number is not zero, then the Value field specifies the offset within the section.
-    STATIC = 3  # The offset of the symbol within the section. If the Value field is zero, then the symbol represents a section name.
-    REGISTER = 4  # A register variable. The Value field specifies the register number.
-    EXTERNAL_DEF = 5  # A symbol that is defined externally.
-    LABEL = 6  # A code label that is defined within the module. The Value field specifies the offset of the symbol within the section.
-    UNDEFINED_LABEL = 7  # A reference to a code label that is not defined.
-    MEMBER_OF_STRUCT = 8  # The structure member. The Value field specifies the nth member.
-    ARGUMENT = 9  # A formal argument (parameter) of a function. The Value field specifies the nth argument.
-    STRUCT_TAG = 10  # The structure tag-name entry.
-    MEMBER_OF_UNION = 11  # A union member. The Value field specifies the nth member.
-    UNION_TAG = 12  # The Union tag-name entry.
-    TYPE_DEFINITION = 13  # A Typedef entry.
-    UNDEFINED_STATIC = 14  # A static data declaration.
-    ENUM_TAG = 15  # An enumerated type tagname entry.
-    MEMBER_OF_ENUM = 16  # A member of an enumeration. The Value field specifies the nth member.
-    REGISTER_PARAM = 17  # A register parameter.
-    BIT_FIELD = 18  # A bit-field reference. The Value field specifies the nth bit in the bit field.
-    BLOCK = 100  # A .bb (beginning of block) or .eb (end of block) record. The Value field is the relocatable address of the code location.
-    FUNCTION = 101  # A value that Microsoft tools use for symbol records that define the extent of a function: begin function (.bf), end function (.ef), and lines in function (.lf). For .lf records, the Value field gives the number of source lines in the function. For .ef records, the Value field gives the size of the function code.
-    END_OF_STRUCT = 102  # An end-of-structure entry.
-    FILE = 103  # A value that Microsoft tools, as well as traditional COFF format, use for the source-file symbol record. The symbol is followed by auxiliary records that name the file.
-    SECTION = 104  # A definition of a section (Microsoft tools use STATIC storage class instead).
-    WEAK_EXTERNAL = 105  # A weak external. For more information, see section 5.5.3, “Auxiliary Format 3: Weak Externals.”
-    CLR_TOKEN = 107  # A CLR token symbol. The name is an ASCII string that consists of the hexadecimal value of the token. For more information, see section 5.5.7, “CLR Token Definition (Object Only).”
+    END_OF_FUNCTION = -1
+    NULL = 0
+    AUTOMATIC = 1
+    EXTERNAL = 2
+    STATIC = 3
+    REGISTER = 4
+    EXTERNAL_DEF = 5
+    LABEL = 6
+    UNDEFINED_LABEL = 7
+    MEMBER_OF_STRUCT = 8
+    ARGUMENT = 9
+    STRUCT_TAG = 10
+    MEMBER_OF_UNION = 11
+    UNION_TAG = 12
+    TYPE_DEFINITION = 13
+    UNDEFINED_STATIC = 14
+    ENUM_TAG = 15
+    MEMBER_OF_ENUM = 16
+    REGISTER_PARAM = 17
+    BIT_FIELD = 18
+    BLOCK = 100
+    FUNCTION = 101
+    END_OF_STRUCT = 102
+    FILE = 103
+    SECTION = 104.
+    WEAK_EXTERNAL = 105
+    CLR_TOKEN = 107
 
 
 class BaseType(enum.IntEnum):
-    NULL = 0  # No type information or unknown base type. Microsoft tools use this setting
-    VOID = 1  # No valid type; used with void pointers and functions
-    CHAR = 2  # A character (signed byte)
-    SHORT = 3  # A 2-byte signed integer
-    INT = 4  # A natural integer type (normally 4 bytes in Windows)
-    LONG = 5  # A 4-byte signed integer
-    FLOAT = 6  # A 4-byte floating-point number
-    DOUBLE = 7  # An 8-byte floating-point number
-    STRUCT = 8  # A structure
-    UNION = 9  # A union
-    ENUM = 10  # An enumerated type
-    MOE = 11  # A member of enumeration (a specific value)
-    BYTE = 12  # A byte; unsigned 1-byte integer
-    WORD = 13  # A word; unsigned 2-byte integer
-    UINT = 14  # An unsigned integer of natural size (normally, 4 bytes)
-    DWORD = 15  # An unsigned 4-byte integer
+    NULL = 0
+    VOID = 1
+    CHAR = 2
+    SHORT = 3
+    INT = 4
+    LONG = 5
+    FLOAT = 6
+    DOUBLE = 7
+    STRUCT = 8
+    UNION = 9
+    ENUM = 10
+    MOE = 11
+    BYTE = 12
+    WORD = 13
+    UINT = 14
+    DWORD = 15
 
 
 class ComplexType(enum.IntEnum):
-    NULL = 0  # No derived type; the symbol is a simple scalar variable.
-    POINTER = 1  # The symbol is a pointer to base type.
-    FUNCTION = 2  # The symbol is a function that returns a base type.
-    ARRAY = 3  # The symbol is an array of base type.
+    NULL = 0
+    POINTER = 1
+    FUNCTION = 2
+    ARRAY = 3
 
 
 def mktype(base, comp):
