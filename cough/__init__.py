@@ -12,6 +12,7 @@ Now, let's create a '.text' section:
 Add a bit of code:
 
 >>> section.data = b'\x29\xC0\xC3'  # return 0
+... section.size_of_raw_data = len(section.data)
 
 Good enough, let's add it to our module:
 
