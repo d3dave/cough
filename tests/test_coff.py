@@ -15,7 +15,7 @@ def test_coff():
     sec_aaaa = cough.Section(b'aaaa', cough.SectionFlags.MEM_EXECUTE, b'\x48\xC7\xC0\x00\x00\x00\x00\xC3')
     module.sections.append(sec_aaaa)
 
-    sym1 = cough.SymbolRecord(b'main', section_number=1, storage_class=symbol.StorageClass.EXTERNAL)
+    sym1 = cough.SymbolRecord(b'main', section_number=1, storage_class=cough.StorageClass.EXTERNAL)
     sym1.value = 0  # offset 0
     module.symbols.append(sym1)
 
