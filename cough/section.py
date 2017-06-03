@@ -2,6 +2,41 @@ import enum
 import struct
 
 
+class Relocation:
+    """
+    Offset	Size	Field
+    =====================================
+      0	      4	    VirtualAddress
+      4	      4	    SymbolTableIndex
+      8	      2	    Type
+
+    VirtualAddress:
+        The address of the item to which relocation is applied. This is the offset from the beginning of the section,
+        plus the value of the section’s RVA/Offset field. For example, if the first byte of the section has an address
+        of 0x10, the third byte has an address of 0x12.
+    SymbolTableIndex:
+        A zero-based index into the symbol table. This symbol gives the address that is to be used for the relocation.
+        If the specified symbol has section storage class, then the symbol’s address is the address with the first
+        section of the same name.
+    Type:
+        A value that indicates the kind of relocation that should be performed. Valid relocation types depend on
+        machine type.
+    """
+    struct = struct.Struct('<LLH')
+
+    def __init__(self):
+        self.virtual_address = 0
+        self.symbol_table_index = 0
+        self.type = 0
+
+    def pack(self):
+        return self.struct.pack(
+            self.virtual_address,
+            self.symbol_table_index,
+            self.type
+        )
+
+
 class SectionFlags(enum.IntFlag):
     CNT_CODE = 0x00000020
     CNT_INITIALIZED_DATA = 0x00000040
@@ -88,6 +123,7 @@ class Section:
         self.name = name
         self.flags = flags or 0
         self.data = data
+        self.relocations = []
         self.virtual_size = 0
         self.virtual_address = 0
         self.size_of_raw_data = len(data) if data else 0

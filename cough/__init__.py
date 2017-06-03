@@ -54,5 +54,6 @@ __all__ = [
     'SymbolRecord',
     'mktype',
     'Section',
-    'StringTable'
+    'StringTable',
+    'Relocation'
 ]

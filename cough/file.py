@@ -126,17 +126,24 @@ class ObjectModule:
 
     def dump_sections(self):
         data_buf = bytearray()
-        offsets = []
+        sections_offsets = []
+        reloc_offsets = []
         for sec in self.sections:
             if sec.data:
-                offsets.append(len(data_buf))
+                sections_offsets.append(len(data_buf))
                 data_buf += sec.data
+            if sec.relocations:
+                reloc_offsets.append(len(data_buf))
+                for reloc in sec.relocations:
+                    data_buf += reloc.pack()
 
-        sections_offset = FileHeader.struct.size + 40 * len(self.sections)
+        sections_buffer_offset = FileHeader.struct.size + 40 * len(self.sections)
         hdrs_and_data_buf = bytearray()
         for i, sec in enumerate(self.sections):
             if sec.data:
-                sec.pointer_to_raw_data = sections_offset + offsets[i]
+                sec.pointer_to_raw_data = sections_buffer_offset + sections_offsets[i]
+            if sec.relocations:
+                sec.pointer_to_relocations = sections_buffer_offset + reloc_offsets[i]
             hdrs_and_data_buf += sec.get_header()
         hdrs_and_data_buf += data_buf
         return bytes(hdrs_and_data_buf)

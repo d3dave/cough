@@ -26,3 +26,40 @@ def test_coff():
     exe_path = base + '.exe'
     subprocess.run(['PowerShell.exe', BUILD_SCRIPT, file.name, '/out:' + '"' + exe_path + '"'], check=True)
     subprocess.run([exe_path], check=True)
+
+
+def test_reloc():
+    module = cough.ObjectModule()
+
+    instructions = [
+        b'\x48\x83\xEC\x28',      # sub rsp, 28h
+        b'\xB9\x41\x00\x00\x00',  # mov ecx, 41h
+        b'\xE8\x00\x00\x00\x00',  # call putchar
+        b'\x48\x83\xC4\x28',      # add rsp, 28h
+        b'\x29\xC0',              # sub eax, eax
+        b'\xC3']                  # ret
+    sec_aaaa = cough.Section(b'aaaa', cough.SectionFlags.MEM_EXECUTE, b''.join(instructions))
+    sec_aaaa.number_of_relocations = 1
+    putchar_reloc = cough.Relocation()
+    putchar_reloc.virtual_address = 10
+    putchar_reloc.symbol_table_index = 1
+    putchar_reloc.type = 0x04  # REL32
+    sec_aaaa.relocations.append(putchar_reloc)
+    module.sections.append(sec_aaaa)
+
+    sym1 = cough.SymbolRecord(b'main', section_number=1, storage_class=cough.StorageClass.EXTERNAL)
+    sym1.value = 0  # offset 0
+    module.symbols.append(sym1)
+
+    putchar_sym = cough.SymbolRecord(b'putchar', storage_class=cough.StorageClass.EXTERNAL)
+    putchar_sym.value = 0
+    module.symbols.append(putchar_sym)
+
+    file_buffer = module.get_buffer()
+    with tempfile.NamedTemporaryFile(suffix='.obj', delete=False) as file:
+        file.write(file_buffer)
+    base, _ = os.path.splitext(file.name)
+    exe_path = base + '.exe'
+    subprocess.run(['PowerShell.exe', BUILD_SCRIPT, file.name, '/out:' + '"' + exe_path + '"'], check=True)
+    proc = subprocess.run([exe_path], stdout=subprocess.PIPE, check=True)
+    assert proc.stdout == b'A'
