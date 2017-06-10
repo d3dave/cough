@@ -63,3 +63,16 @@ def test_reloc():
     subprocess.run(['PowerShell.exe', BUILD_SCRIPT, file.name, '/out:' + '"' + exe_path + '"'], check=True)
     proc = subprocess.run([exe_path], stdout=subprocess.PIPE, check=True)
     assert proc.stdout == b'A'
+
+
+def test_uninit_before_init():
+    module = cough.ObjectModule()
+
+    sec_uninit = cough.Section(b'uninit', cough.SectionFlags.CNT_UNINITIALIZED_DATA)
+    sec_uninit.size_of_raw_data = 0x400
+    module.sections.append(sec_uninit)
+
+    sec_init = cough.Section(b'init', 0, b'\xAA\xBB\xCC\xDD')
+    module.sections.append(sec_init)
+
+    assert module.get_buffer()
