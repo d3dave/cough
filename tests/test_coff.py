@@ -23,7 +23,7 @@ def test_coff():
     with tempfile.NamedTemporaryFile(suffix='.obj', delete=False) as file:
         file.write(file_buffer)
     base, _ = os.path.splitext(file.name)
-    exe_path = base + '.exe'
+    exe_path = f'{base}.exe'
     subprocess.run(['PowerShell.exe', BUILD_SCRIPT, file.name, '/out:' + '"' + exe_path + '"'], check=True)
     subprocess.run([exe_path], check=True)
 
@@ -59,7 +59,7 @@ def test_reloc():
     with tempfile.NamedTemporaryFile(suffix='.obj', delete=False) as file:
         file.write(file_buffer)
     base, _ = os.path.splitext(file.name)
-    exe_path = base + '.exe'
+    exe_path = f'{base}.exe'
     subprocess.run(['PowerShell.exe', BUILD_SCRIPT, file.name, '/out:' + '"' + exe_path + '"'], check=True)
     proc = subprocess.run([exe_path], stdout=subprocess.PIPE, check=True)
     assert proc.stdout == b'A'
